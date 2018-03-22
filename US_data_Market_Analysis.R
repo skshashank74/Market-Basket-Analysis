@@ -40,14 +40,13 @@ inspect(sort(MBA, by = "lift", decreasing = TRUE)[1:10])
 MBA1 <- as(MBA, "data.frame")
 write.csv(MBA1, file = 'Market_analysis.csv')
 
-#graph lot for support confidence lift
+#graph for support confidence lift
 {% highlight r %}
 library("arulesViz")
 plot(MBA)
 {% endhighlight %}
 
-----
-#when we specify our LHS or RHS this can be used
+
 # find redundant rules
 subset.matrix <- is.subset(MBA, MBA)
 subset.matrix[lower.tri(subset.matrix, diag=T)] <- NA
