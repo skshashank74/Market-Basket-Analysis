@@ -1,4 +1,4 @@
-# to find the best selling combination of product through Market Basket Analysis
+# to find the best selling combination of product through Apriori Algorithm
 
 #Load the libraries
 require(arules)
@@ -65,8 +65,7 @@ MBA2 <- MBA[!redundant]
 inspect(MBA2)
 summary(MBA2)
 
-write.csv(redundant, file = 'redundant.csv')
-------
+write.csv(redundant, file = 'redundant.csv'
   
 ## Create different visualizations
 plot(MBA, method="graph", main="", control=list(layout=igraph::with_graphopt()))
