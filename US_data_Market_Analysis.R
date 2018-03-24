@@ -1,18 +1,25 @@
+# to find the best selling combination of product through Market Basket Analysis
+
+#Load the libraries
+require(arules)
+require(arulesViz)
+
+install.packages("arulesViz")
 
 #upload the data
-US_data <- read.csv("US_data_product.csv")
+US_data <- read.csv("US_data_product_1jan_31july.csv")
 
 #check the data
 head(US_data)
 
-#split the data in transaction format
+#split the data in sparse matrix form
 i <- split(US_data$Product,US_data$Transaction_id)
 
 #check the data
 head(i)
 summary(i)
 
-#convert the data in transaction format(sparse matrix format)
+#convert the data in transaction format
 library(arules)
 txid <- as(i, "transactions")
 
@@ -26,10 +33,10 @@ support_txid <- itemFrequency(txid)
 write.csv(support_txid, file = 'support12.csv')
 
 #graph plot for support
-itemFrequencyPlot(txid, topN =30)
+itemFrequencyPlot(txid, topN =20)
 
-#apriori algorithm
-MBA <- apriori(txid, parameter = list(support = 0.001, confidence = 0.005, minlen = 3))
+#apriori algorithm for two length 
+MBA <- apriori(txid, parameter = list(support = 0.001, confidence = 0.1, maxlen = 2))
 
 #check the data and inspect in content
 summary(MBA)
@@ -40,7 +47,7 @@ inspect(sort(MBA, by = "lift", decreasing = TRUE)[1:10])
 MBA1 <- as(MBA, "data.frame")
 write.csv(MBA1, file = 'Market_analysis.csv')
 
-#graph for support confidence lift
+#graph lot for support confidence lift
 {% highlight r %}
 library("arulesViz")
 plot(MBA)
@@ -60,3 +67,12 @@ summary(MBA2)
 
 write.csv(redundant, file = 'redundant.csv')
 ------
+  
+## Create different visualizations
+plot(MBA, method="graph", main="", control=list(layout=igraph::with_graphopt()))
+plot(MBA, method="paracoord")
+plot(MBA, method="grouped")
+## plot(rules,method="graph",interactive=TRUE,shading=NA) 
+##In plot.rules(rules, method = "graph", interactive = TRUE, shading = NA) :
+##The parameter interactive is deprecated. Use engine='interactive' instead.
+plot(MBA,method="graph",engine='interactive',shading=NA)
